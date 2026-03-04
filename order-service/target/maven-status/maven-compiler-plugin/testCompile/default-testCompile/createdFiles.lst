@@ -1,0 +1,3 @@
+com\smartthingshop\orderservice\controller\OrderControllerApiTest.class
+com\smartthingshop\orderservice\service\OrderServiceTest.class
+com\smartthingshop\orderservice\controller\OrderControllerIntegrationTest.class

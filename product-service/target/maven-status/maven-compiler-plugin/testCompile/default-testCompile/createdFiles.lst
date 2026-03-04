@@ -1,0 +1,3 @@
+com\smartthingshop\productservice\controller\ProductControllerApiTest.class
+com\smartthingshop\productservice\controller\ProductControllerIntegrationTest.class
+com\smartthingshop\productservice\service\ProductServiceTest.class

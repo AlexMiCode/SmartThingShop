@@ -1,0 +1,7 @@
+**/target
+**/.idea
+**/.git
+bootstrap
+tmpboot
+*.zip
+tz_extracted.txt

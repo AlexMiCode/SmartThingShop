@@ -1,0 +1,132 @@
+version: "3.9"
+services:
+  service-registry:
+    build:
+      context: .
+      dockerfile: service-registry/Dockerfile
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+
+  config-server:
+    build:
+      context: .
+      dockerfile: config-server/Dockerfile
+    container_name: config-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+    depends_on:
+      - service-registry
+    ports:
+      - "8888:8888"
+
+  gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: api-gateway
+    environment:
+      - JWT_SECRET=${JWT_SECRET:-smartthingshop-secret-12345678901234567890}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+    depends_on:
+      - service-registry
+    ports:
+      - "8080:8080"
+
+  user-db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=user_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  product-db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=product_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  order-db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=order_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  notification-db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=notification_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  redis:
+    image: redis:7
+
+  user-service:
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    depends_on:
+      - service-registry
+      - user-db
+    environment:
+      - DB_URL=jdbc:postgresql://user-db:5432/user_service
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+    ports:
+      - "8081:8081"
+
+  product-service:
+    build:
+      context: .
+      dockerfile: product-service/Dockerfile
+    depends_on:
+      - service-registry
+      - product-db
+      - redis
+    environment:
+      - DB_URL=jdbc:postgresql://product-db:5432/product_service
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+    ports:
+      - "8082:8082"
+
+  order-service:
+    build:
+      context: .
+      dockerfile: order-service/Dockerfile
+    depends_on:
+      - service-registry
+      - order-db
+      - product-service
+      - notification-service
+    environment:
+      - DB_URL=jdbc:postgresql://order-db:5432/order_service
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - SERVICES_PRODUCT_URL=http://product-service:8082
+      - SERVICES_NOTIFICATION_URL=http://notification-service:8084
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+    ports:
+      - "8083:8083"
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: notification-service/Dockerfile
+    depends_on:
+      - service-registry
+      - notification-db
+    environment:
+      - DB_URL=jdbc:postgresql://notification-db:5432/notification_service
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+    ports:
+      - "8084:8084"

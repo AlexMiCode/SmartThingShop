@@ -1,0 +1,11 @@
+com\smartthingshop\orderservice\config\HttpConfig.class
+com\smartthingshop\orderservice\OrderServiceApplication.class
+com\smartthingshop\orderservice\service\OrderService.class
+com\smartthingshop\orderservice\exception\BusinessException.class
+com\smartthingshop\orderservice\controller\OrderController.class
+com\smartthingshop\orderservice\domain\OrderEntity.class
+com\smartthingshop\orderservice\domain\OrderStatus.class
+com\smartthingshop\orderservice\exception\GlobalExceptionHandler.class
+com\smartthingshop\orderservice\repository\OrderRepository.class
+com\smartthingshop\orderservice\dto\CreateOrderRequest.class
+com\smartthingshop\orderservice\dto\OrderResponse.class

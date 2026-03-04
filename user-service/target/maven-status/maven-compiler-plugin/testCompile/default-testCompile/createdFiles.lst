@@ -1,0 +1,3 @@
+com\smartthingshop\userservice\service\UserServiceTest.class
+com\smartthingshop\userservice\controller\UserControllerApiTest.class
+com\smartthingshop\userservice\controller\UserControllerIntegrationTest.class

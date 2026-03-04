@@ -1,0 +1,3 @@
+com\smartthingshop\notificationservice\controller\NotificationControllerIntegrationTest.class
+com\smartthingshop\notificationservice\controller\NotificationControllerApiTest.class
+com\smartthingshop\notificationservice\service\NotificationServiceTest.class

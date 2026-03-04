@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.smartthingshop.orderservice.service.OrderServiceTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.248 s -- in com.smartthingshop.orderservice.service.OrderServiceTest
